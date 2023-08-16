@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { TimeLinePost } from '../posts';
+import { marked } from 'marked';
 
 const props = defineProps<{ post: TimeLinePost }>();
 const title = ref(props.post.title);
 const content = ref(props.post.markdown);
 const contentEditable = ref<HTMLDivElement>();
+
+const html = computed(() => marked.parse(content.value));
 
 onMounted(() => {
   if (!contentEditable.value) {
@@ -45,7 +48,7 @@ function handleInput() {
       />
     </div>
     <div class="column">
-      {{ content }}
+      <div v-html="html" />
     </div>
   </div>
 </template>
