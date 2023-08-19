@@ -2,13 +2,22 @@
 import { ref, onMounted, computed } from 'vue';
 import { TimeLinePost } from '../posts';
 import { marked } from 'marked';
+import highlightjs from 'highlight.js';
 
 const props = defineProps<{ post: TimeLinePost }>();
 const title = ref(props.post.title);
 const content = ref(props.post.markdown);
 const contentEditable = ref<HTMLDivElement>();
 
-const html = computed(() => marked.parse(content.value));
+const html = computed(() =>
+  marked.parse(content.value, {
+    gfm: true,
+    breaks: true,
+    highlight: (code) => {
+      return highlightjs.highlightAuto(code).value;
+    },
+  })
+);
 
 onMounted(() => {
   if (!contentEditable.value) {
