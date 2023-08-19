@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { TimeLinePost } from '../posts';
+import { useRouter } from 'vue-router';
 import { marked } from 'marked';
 import highlightjs from 'highlight.js';
 import { debounce } from 'lodash';
@@ -13,6 +14,7 @@ const html = ref('');
 const contentEditable = ref<HTMLDivElement>();
 
 const posts = usePosts();
+const router = useRouter();
 
 function parseHtml(markdown: string) {
   return marked.parse(markdown, {
@@ -48,14 +50,15 @@ function handleInput() {
   content.value = contentEditable.value?.innerText;
 }
 
-function handleClick() {
+async function handleClick() {
   const newPost: TimeLinePost = {
     ...props.post,
     title: title.value,
     markdown: content.value,
     html: html.value,
   };
-  posts.createPost(newPost);
+  await posts.createPost(newPost);
+  router.push('/');
 }
 </script>
 
