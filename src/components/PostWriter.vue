@@ -1,22 +1,34 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { TimeLinePost } from '../posts';
 import { marked } from 'marked';
 import highlightjs from 'highlight.js';
+import { debounce } from 'lodash';
 
 const props = defineProps<{ post: TimeLinePost }>();
 const title = ref(props.post.title);
 const content = ref(props.post.markdown);
+const html = ref('');
 const contentEditable = ref<HTMLDivElement>();
 
-const html = computed(() =>
-  marked.parse(content.value, {
+function parseHtml(markdown: string) {
+  return marked.parse(markdown, {
     gfm: true,
     breaks: true,
     highlight: (code) => {
       return highlightjs.highlightAuto(code).value;
     },
-  })
+  });
+}
+
+watch(
+  content,
+  debounce((newContent) => {
+    html.value = parseHtml(newContent);
+  }, 250),
+  {
+    immediate: true,
+  }
 );
 
 onMounted(() => {
