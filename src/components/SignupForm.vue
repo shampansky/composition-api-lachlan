@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import FormInput from './FormInput.vue';
+import { NewUser } from '../users';
 import { validate, length, required } from '../validation';
 
 const username = ref('');
@@ -12,10 +13,27 @@ const passowrd = ref('');
 const passwordStatus = computed(() => {
   return validate(passowrd.value, [required, length({ min: 10, max: 40 })]);
 });
+
+const isInvalid = computed(() => {
+  return !usernameStatus.value.valid || !passwordStatus.value.valid;
+});
+
+function handleSubmit() {
+  if (isInvalid.value) return;
+  const newUser: NewUser = {
+    username: username.value,
+    password: passowrd.value,
+  };
+
+  console.log(newUser);
+}
 </script>
 
 <template>
-  <form class="form">
+  <form
+    class="form"
+    @submit.prevent="handleSubmit"
+  >
     <FormInput
       name="Username"
       v-model="username"
@@ -26,6 +44,7 @@ const passwordStatus = computed(() => {
       v-model="passowrd"
       :status="passwordStatus"
     />
+    <button class="button">Submit</button>
   </form>
 </template>
 
