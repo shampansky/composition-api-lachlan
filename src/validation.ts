@@ -13,7 +13,7 @@ export function length({ min, max }: { min: number; max: number }): Rule {
       valid: result,
       message: result
         ? undefined
-        : `This field must bo betweeb ${min} and ${max}`,
+        : `This field must bo between ${min} and ${max}`,
     };
   };
 }
@@ -39,9 +39,3 @@ export function validate(value: string, rules: Rule[]): Status {
     valid: true,
   };
 }
-
-console.log(
-  validate('a', [length({ min: 5, max: 10 })]),
-  validate('afdasfasd', [length({ min: 5, max: 10 })]),
-  validate('aadsfffffffasdfasdfasdfasdf', [length({ min: 5, max: 10 })])
-);

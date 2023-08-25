@@ -5,13 +5,15 @@ import { NewUser } from '../users';
 import { validate, length, required } from '../validation';
 
 const username = ref('');
+const usernameInput = ref<InstanceType<typeof FormInput> | null>(null);
 const usernameStatus = computed(() => {
   return validate(username.value, [required, length({ min: 5, max: 10 })]);
 });
 
-const passowrd = ref('');
+const password = ref('');
+const passwordInput = ref<InstanceType<typeof FormInput> | null>(null);
 const passwordStatus = computed(() => {
-  return validate(passowrd.value, [required, length({ min: 10, max: 40 })]);
+  return validate(password.value, [required, length({ min: 10, max: 40 })]);
 });
 
 const isInvalid = computed(() => {
@@ -19,10 +21,12 @@ const isInvalid = computed(() => {
 });
 
 function handleSubmit() {
+  usernameInput.value?.validate();
+  passwordInput.value?.validate();
   if (isInvalid.value) return;
   const newUser: NewUser = {
     username: username.value,
-    password: passowrd.value,
+    password: password.value,
   };
 
   console.log(newUser);
@@ -35,13 +39,15 @@ function handleSubmit() {
     @submit.prevent="handleSubmit"
   >
     <FormInput
+      ref="usernameInput"
       name="Username"
       v-model="username"
       :status="usernameStatus"
     />
     <FormInput
+      ref="passwordInput"
       name="Password"
-      v-model="passowrd"
+      v-model="password"
       :status="passwordStatus"
     />
     <button class="button">Submit</button>
