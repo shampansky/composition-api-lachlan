@@ -52,12 +52,14 @@ async function handleSubmit() {
       name="Username"
       v-model="username"
       :status="usernameStatus"
+      type="text"
     />
     <FormInput
       ref="passwordInput"
       name="Password"
       v-model="password"
       :status="passwordStatus"
+      type="password"
     />
     <button class="button">Submit</button>
   </form>

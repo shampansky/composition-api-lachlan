@@ -6,6 +6,7 @@ const props = defineProps<{
   name: string;
   modelValue: string;
   status: Status;
+  type: string;
 }>();
 
 const isFocus = ref(false);
@@ -57,7 +58,7 @@ watch(
     >
     <div class="control">
       <input
-        type="text"
+        :type="type"
         class="input"
         :id="name"
         :value="modelValue"
