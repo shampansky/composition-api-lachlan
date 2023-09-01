@@ -22,7 +22,7 @@ const userStore = useUsers();
         </RouterLink>
         <button
           class="button"
-          @click="modal.showModal"
+          @click="userStore.logout"
         >
           Log Out
         </button>
