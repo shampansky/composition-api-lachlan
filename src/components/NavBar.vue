@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useModal } from '../composables/modal';
 import { useUsers } from '../stores/users';
-import SignupForm from './SignupForm.vue';
 
 const modal = useModal();
 const userStore = useUsers();
@@ -34,21 +33,21 @@ const userStore = useUsers();
       >
         <button
           class="button"
-          @click="modal.showModal"
+          @click="modal.showModal('signUp')"
         >
           Sign Up
         </button>
-        <RouterLink
-          to="/posts/new"
+        <button
           class="button"
+          @click="modal.showModal('signIn')"
         >
           Sign In
-        </RouterLink>
+        </button>
       </div>
     </div>
   </div>
 
   <Teleport to="#modal">
-    <SignupForm />
+    <component :is="modal.component.value" />
   </Teleport>
 </template>
