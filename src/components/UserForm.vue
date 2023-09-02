@@ -4,6 +4,10 @@ import FormInput from './FormInput.vue';
 import { NewUser } from '../users';
 import { validate, length, required } from '../validation';
 
+defineProps<{
+  error?: string;
+}>();
+
 const emit = defineEmits<{
   (event: 'submit', payload: NewUser): void;
 }>();
@@ -58,6 +62,12 @@ async function handleSubmit() {
       :status="passwordStatus"
       type="password"
     />
+    <div
+      v-if="error"
+      class="is-danger help"
+    >
+      {{ error }}
+    </div>
     <button class="button">Submit</button>
   </form>
 </template>
